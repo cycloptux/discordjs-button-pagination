@@ -1,23 +1,24 @@
 const {
-  MessageActionRow,
+  ActionRow,
   Message,
-  MessageEmbed,
-  MessageButton,
+  Embed,
+  ButtonComponent,
+  ButtonStyle
 } = require("discord.js");
 
 /**
  * Creates a pagination embed
  * @param {Message} msg
- * @param {MessageEmbed[]} pages
- * @param {MessageButton[]} buttonList
+ * @param {Embed[]} pages
+ * @param {ButtonComponent[]} buttonList
  * @param {number} timeout
  * @returns
  */
-const paginationEmbed = async (msg, pages, buttonList, timeout = 120000) => {
+const paginationEmbed = async (msg, pages, buttonList, timeout = 120_000) => {
   if (!msg && !msg.channel) throw new Error("Channel is inaccessible.");
   if (!pages) throw new Error("Pages are not given.");
   if (!buttonList) throw new Error("Buttons are not given.");
-  if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK")
+  if (buttonList[0].style === ButtonStyle.Link || buttonList[1].style === ButtonStyle.Link)
     throw new Error(
       "Link buttons are not supported with discordjs-button-pagination"
     );
@@ -25,9 +26,9 @@ const paginationEmbed = async (msg, pages, buttonList, timeout = 120000) => {
 
   let page = 0;
 
-  const row = new MessageActionRow().addComponents(buttonList);
+  const row = new ActionRow().addComponents(buttonList);
   const curPage = await msg.channel.send({
-    embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
+    embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
     components: [row],
   });
 
@@ -53,20 +54,20 @@ const paginationEmbed = async (msg, pages, buttonList, timeout = 120000) => {
     }
     await i.deferUpdate();
     await i.editReply({
-      embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
+      embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
       components: [row],
     });
     collector.resetTimer();
   });
 
   collector.on("end", () => {
-    if (!curPage.deleted) {
-      const disabledRow = new MessageActionRow().addComponents(
+    if (curPage.editable) {
+      const disabledRow = new ActionRow().addComponents(
         buttonList[0].setDisabled(true),
         buttonList[1].setDisabled(true)
       );
       curPage.edit({
-        embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
+        embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
         components: [disabledRow],
       });
     }

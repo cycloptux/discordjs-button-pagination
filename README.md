@@ -27,7 +27,7 @@ For `interaction` event
 ## Default command: `npm install discordjs-button-pagination` will install the **`interaction`** version
 
 # Requirements
-Node.js 16.6.1 or newer is required along with Discord.js 13.0.0 or newer.
+Node.js 16.9 or newer is required along with Discord.js 14.0.0 or newer.
 
 
 # Usage for Message Command
@@ -36,26 +36,26 @@ __Basic Bot Example__
 // Import the discordjs-button-pagination package
 const paginationEmbed = require('discordjs-button-pagination');
 
-// Use MessageEmbed to make pages
+// Use Embed to make pages
 // Keep in mind that Embeds should't have their footers set since the pagination method sets page info there
-const { MessageEmbed , MessageButton} = require('discord.js');
-const embed1 = new MessageEmbed()
+const { Embed, ButtonComponent, ButtonStyle } = require('discord.js');
+const embed1 = new Embed()
                 .setTitle('First Page')
                 .setDescription('This is the first page');
 
-const embed2 = new MessageEmbed()
+const embed2 = new Embed()
                 .setTitle('Second Page')
                 .setDescription('This is the second page');
 
-const button1 = new MessageButton()
+const button1 = new ButtonComponent()
                 .setCustomId('previousbtn')
                 .setLabel('Previous')
-                .setStyle('DANGER');
+                .setStyle(ButtonStyle.Danger);
 
-const button2 = new MessageButton()
+const button2 = new ButtonComponent()
                 .setCustomId('nextbtn')
                 .setLabel('Next')
-                .setStyle('SUCCESS');
+                .setStyle(ButtonStyle.Success);
 
 // Create an array of embeds
 pages = [
@@ -80,7 +80,7 @@ paginationEmbed(message, pages, buttonList, timeout);
 ```
 
 # Note
-This will not work with buttons whose style is set as 'LINK' as they do not trigger an interaction event. The buttons will auto disable once the the collector ends after the timeout.
+This will not work with buttons whose style is set as 'ButtonStyle.Link' as they do not trigger an interaction event. The buttons will auto disable once the the collector ends after the timeout.
 ## The collector timer resets after receiving a button interaction.
 
 # Preview
