@@ -26,7 +26,8 @@ const paginationEmbed = async (msg, pages, buttonList, timeout = 120_000) => {
 
   let page = 0;
 
-  const row = new ActionRow().addComponents(buttonList);
+  const row = new ActionRow();
+  buttonList.forEach((button) => { row.addComponents(button); });
   const curPage = await msg.channel.send({
     embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
     components: [row],
@@ -62,10 +63,10 @@ const paginationEmbed = async (msg, pages, buttonList, timeout = 120_000) => {
 
   collector.on("end", () => {
     if (curPage.editable) {
-      const disabledRow = new ActionRow().addComponents(
-        buttonList[0].setDisabled(true),
-        buttonList[1].setDisabled(true)
-      );
+      const disabledRow = new ActionRow();
+      buttonList.forEach((button) => {
+        row.addComponents(button.setDisabled(true));
+      });
       curPage.edit({
         embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
         components: [disabledRow],
