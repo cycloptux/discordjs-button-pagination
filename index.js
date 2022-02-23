@@ -61,8 +61,8 @@ const paginationEmbed = async (msg, pages, buttonList, timeout = 120_000) => {
     collector.resetTimer();
   });
 
-  collector.on("end", () => {
-    if (curPage.editable) {
+  collector.on("end", (_, reason) => {
+    if (reason !== "messageDelete") {
       const disabledRow = new ActionRow();
       buttonList.forEach((button) => {
         disabledRow.addComponents(button.setDisabled(true));
