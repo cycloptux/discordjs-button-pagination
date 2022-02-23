@@ -8,7 +8,7 @@
 </div>
 
 # discordjs-button-pagination
-A simple package to paginate discord embeds via discord buttons introduced in [discord.js v13](https://github.com/discordjs/discord.js/tree/master).
+A simple package to paginate discord embeds via discord buttons introduced in [discord.js v13 and later](https://github.com/discordjs/discord.js).
 
 # Versions
 
